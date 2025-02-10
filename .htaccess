@@ -1,0 +1,18 @@
+Options +FollowSymLinks 
+# Apache가 심볼릭 링크를 따라갈 수 있도록 허용하는 설정, 이 옵션이 없으면 심볼릭링크를 사용하려 할 때 403Forbidden 오류가 발생함 (심볼링크: 원본 파일이나 폴더의 바로가기 역할을 함함)
+RewriteEngine On
+# Apache의 mod_rewrite 모듈을 활성화하는 설정 (RewriteEngine on을 해야 RewriteRule이 동작함)
+RewriteCond %{REQUEST_FILENAME} !-d
+# 요청된 URL이 디렉토리가 아닌 경우에만 다음 RewriteRule을 적용(사용자가 실제 디렉토리를 요청하면 URL을 변경하지 않음음)
+RewriteCond %{REQUEST_FILENAME} !-f
+# 요청된 URL이 실제 파일이 아닐 경우에만 RewriteRule을 적용(요청된 파일이 서버에 존재하면 리다이렉트하지 않고 그대로 요청을 처리함함)
+
+RewriteRule ^(.*)$ /index.php?/$1[L,QSA]
+# 정규 표현식 ^(.*)$: .*은  **모든 문자(0개 이상)**을 의미, ^는 문자열의 시작을, $는 문자열의 끝을 나타냄.(어떤 요청이 오든 전부 잡아낸다는 의미)
+# /index.php?/$1: 요청된 URL을 index.php로 보내되, 원래의 요청 경로 $1(정규식에서 캡처된 값)을 index.php?/<경로> 형식으로 넘긴다는 의미.
+# [L,QSA]: L(Last rule): 이 규칙이 적용된 후 더 이상 다른 RewriteRule을 실행하지 않도록 한다. QSA(Query String Append): 기존에 있던 쿼리 스트링(예: ?id=123)을 유지한 채로 전달함.
+
+# .htaccess파일이 하는일:
+# 1.요청된 URL이 실제 파일이나 디렉터리가 아니라면 index.php로 강제 리디렉션함.(리디렉션: 웹페이지를 자동으로 다른 곳으로 이동시키는 기능)
+# 2. 예를 들어 사용자가 /about을 요청하면, 내부적으로 /index.php?/about으로 변환됨.
+# 3. 보통 프레임워크에서 URL 라우팅을 처리하기 위한 설정임.

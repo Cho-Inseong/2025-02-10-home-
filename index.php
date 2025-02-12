@@ -11,6 +11,18 @@ switch ($resource[1]) { //$resource[1]에 값이 있으면 switch case문 실행
     case '':
         $pages = './views/dashboard.php';
         break;
+    case 'login':
+        $pages = './views/login.php';
+        break;
+    case 'register':
+        $pages = './views/register.php';
+        break;
+    case 'logout':
+        $pages = './views/logout.php';
+        break;
+    case 'create_post':
+        $pages = './views/create_post.php';
+        break;
     default:
         echo "경로가 잘못됨";
         break;   
